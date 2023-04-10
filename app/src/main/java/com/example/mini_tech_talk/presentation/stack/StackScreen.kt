@@ -70,11 +70,11 @@ internal fun StackScreen(
 //    Log.d("puyo", "list: $backStackList")
 //    Log.d("puyo", "currentBackStack: ${navHostController.currentBackStackEntry?.destination}")
 //    Log.d("puyo", "prevBackStack: ${navHostController.previousBackStackEntry?.destination}")
-    Scaffold(modifier = modifier) {
+    Scaffold(modifier = modifier) { scaffoldPadding ->
         Column(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(it)
+                .padding(scaffoldPadding)
         ) {
             LazyColumn(
                 modifier = Modifier
@@ -105,8 +105,8 @@ internal fun StackScreen(
                     .background(Color.Cyan.copy(alpha = 0.3f))
             ) {
                 composable(route = "route-a") {
-                    val rememberValue = remember { mutableStateOf(Random.nextInt(100)) }
-                    val saveableValue = rememberSaveable { mutableStateOf(Random.nextInt(100)) }
+                    val rememberValue = remember { mutableStateOf(Random.nextInt(99)) }
+                    val saveableValue = rememberSaveable { mutableStateOf(Random.nextInt(99)) }
 
                     StackComponent(
                         route = "route A",
@@ -116,8 +116,8 @@ internal fun StackScreen(
                 }
 
                 composable(route = "route-b") {
-                    val rememberValue = remember { mutableStateOf(Random.nextInt(100)) }
-                    val saveableValue = rememberSaveable { mutableStateOf(Random.nextInt(100)) }
+                    val rememberValue = remember { mutableStateOf(Random.nextInt(99)) }
+                    val saveableValue = rememberSaveable { mutableStateOf(Random.nextInt(99)) }
 
                     StackComponent(
                         route = "route B",
@@ -149,9 +149,20 @@ internal fun StackScreen(
                     }) {
                         Text(text = "Route A Restore")
                     }
+
+                    Button(onClick = {
+                        navHostController.navigate("route-a") {
+                            navHostController.currentDestination?.route?.let { route ->
+                                popUpTo(route) { inclusive = true }
+                            }
+                        }
+                    }) {
+                        Text(text = "Route A PopSelf")
+                    }
                 }
 
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
                     Button(onClick = {
                         navHostController.navigate("route-b")
                     }) {
@@ -165,6 +176,31 @@ internal fun StackScreen(
                     }) {
                         Text(text = "Route B Restore")
                     }
+
+                    Button(onClick = {
+                        navHostController.navigate("route-b") {
+                            navHostController.currentDestination?.route?.let { route ->
+                                popUpTo(route) { inclusive = true }
+                            }
+                        }
+
+//                        navHostController.popBackStack(
+//                            "route-c",
+//                            true
+//                        )
+
+//                        navHostController.navigate("route-c") {
+//                            popUpTo("route-a")
+//                        }
+//
+//                        navHostController.navigate("route-b") {
+//                            popUpTo("route-b") {
+//                                inclusive = true
+//                            }
+//                        }
+                    }) {
+                        Text(text = "Route B PopSelf")
+                    }
                 }
             }
 
@@ -172,8 +208,10 @@ internal fun StackScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 12.dp, start = 12.dp, end = 12.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceAround
             ) {
+
+
                 Button(onClick = {
                     if (navHostController.previousBackStackEntry != null) {
                         navHostController.navigateUp()
@@ -182,6 +220,20 @@ internal fun StackScreen(
                     Text(text = "Pop")
                 }
 
+
+                Button(onClick = {
+                    if (navHostController.previousBackStackEntry != null) {
+                        navHostController.popBackStack()
+                    }
+                }) {
+                    Text(text = "Pop BackStack")
+                }
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
                 Button(onClick = {
                     if (navHostController.previousBackStackEntry != null) {
                         with(navHostController.currentDestination?.route) {
