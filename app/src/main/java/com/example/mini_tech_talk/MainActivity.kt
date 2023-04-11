@@ -1,6 +1,8 @@
 package com.example.mini_tech_talk
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,7 +36,11 @@ class MainActivity : ComponentActivity() {
             ) {
                 addHomeScreen(
                     modifier = Modifier.fillMaxSize(),
-                    navigateToStackScreen = { navController.navigate(StackScreen.route) }
+                    navigateToStackScreen = { navController.navigate(StackScreen.route) },
+                    navigateToManualScreen = {
+                        val intent = Intent(this@MainActivity, SecondActivity::class.java)
+                        startActivity(intent)
+                    }
                 )
 
                 addStackScreen(
@@ -105,5 +111,10 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun ScreenD(modifier: Modifier = Modifier) {
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("puyo", "Activity onDestroy()")
     }
 }
