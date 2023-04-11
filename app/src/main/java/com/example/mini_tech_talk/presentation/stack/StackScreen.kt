@@ -105,8 +105,8 @@ internal fun StackScreen(
                     .background(Color.Cyan.copy(alpha = 0.3f))
             ) {
                 composable(route = "route-a") {
-                    val rememberValue = remember { mutableStateOf(Random.nextInt(99)) }
-                    val saveableValue = rememberSaveable { mutableStateOf(Random.nextInt(99)) }
+                    val rememberValue = remember { mutableStateOf(Random.nextInt(100)) }
+                    val saveableValue = rememberSaveable { mutableStateOf(Random.nextInt(100)) }
 
                     StackComponent(
                         route = "route A",
@@ -116,8 +116,8 @@ internal fun StackScreen(
                 }
 
                 composable(route = "route-b") {
-                    val rememberValue = remember { mutableStateOf(Random.nextInt(99)) }
-                    val saveableValue = rememberSaveable { mutableStateOf(Random.nextInt(99)) }
+                    val rememberValue = remember { mutableStateOf(Random.nextInt(100)) }
+                    val saveableValue = rememberSaveable { mutableStateOf(Random.nextInt(100)) }
 
                     StackComponent(
                         route = "route B",
@@ -191,6 +191,16 @@ internal fun StackScreen(
 
 //                        navHostController.navigate("route-c") {
 //                            popUpTo("route-a")
+//                        }
+//
+
+//                        navHostController.navigate("route-b") {
+//                            popUpTo("route-a")
+//                        }
+//
+//                        navHostController.navigate("route-b") {
+//                            launchSingleTop = true
+//                            popUpTo("route-b")
 //                        }
 //
 //                        navHostController.navigate("route-b") {
