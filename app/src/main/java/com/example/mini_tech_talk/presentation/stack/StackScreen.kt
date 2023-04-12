@@ -111,7 +111,8 @@ internal fun StackScreen(
                     StackComponent(
                         route = "route A",
                         remember = rememberValue.value,
-                        rememberSaveable = saveableValue.value
+                        rememberSaveable = saveableValue.value,
+                        modifier = Modifier.fillMaxSize()
                     )
                 }
 
@@ -122,7 +123,8 @@ internal fun StackScreen(
                     StackComponent(
                         route = "route B",
                         remember = rememberValue.value,
-                        rememberSaveable = saveableValue.value
+                        rememberSaveable = saveableValue.value,
+                        modifier = Modifier.fillMaxSize()
                     )
                 }
             }
