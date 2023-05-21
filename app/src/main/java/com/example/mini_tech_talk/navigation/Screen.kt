@@ -1,15 +1,11 @@
 package com.example.mini_tech_talk.navigation
 
-import android.os.Build
 import android.os.Bundle
-import android.os.Parcelable
-import androidx.annotation.RequiresApi
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.google.gson.Gson
-import kotlinx.parcelize.Parcelize
 
 sealed class Screen(
     val route: String,
@@ -20,7 +16,9 @@ sealed class Screen(
 
     object StackScreen: Screen("checkout")
 
-    object ManualScreen: Screen("manual")
+    object NavParamScreen: Screen("navparam")
+
+    object NavParamStartScreen: Screen("navparam/start")
 
     object ArgumentScreen: Screen(
         route = "argument/{string}/{int}/{float}",
