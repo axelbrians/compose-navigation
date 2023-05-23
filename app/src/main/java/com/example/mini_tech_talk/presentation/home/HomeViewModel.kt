@@ -26,4 +26,16 @@ class HomeViewModel: ViewModel() {
     }
     val flowList = _flowList
 
+
+    var startTimeInMillis: Long = 0
+    var endTimeInMillis: Long = 0
+
+    fun start() {
+        startTimeInMillis = System.currentTimeMillis()
+    }
+
+    fun stop() {
+        endTimeInMillis = System.currentTimeMillis()
+    }
+
 }

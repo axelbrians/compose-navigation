@@ -51,12 +51,14 @@ fun StackScreen(
     navigateUp: () -> Unit
 ) {
     val navHostController = rememberNavController()
-    val backStackList = navHostController.currentBackStack.collectAsStateWithLifecycle()
+//    val backStackList = navHostController.currentBackStack.collectAsStateWithLifecycle()
+
 
     StackScreen(
         modifier = modifier.fillMaxSize(),
         navHostController = navHostController,
-        backStackList = backStackList.value.asReversed()
+//        backStackList = backStackList.value.asReversed()
+        backStackList = emptyList()
     )
 }
 

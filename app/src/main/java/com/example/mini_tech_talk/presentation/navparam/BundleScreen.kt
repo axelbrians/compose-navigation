@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -14,15 +15,24 @@ import com.example.mini_tech_talk.navigation.Screen.BundleScreen
 import com.example.mini_tech_talk.navigation.composable
 
 fun NavGraphBuilder.addBundleScreen(
-    modifier: Modifier = Modifier
+    stopMeasureTime: () -> Unit,
+    getMeasuredTime: () -> Long,
+    modifier: Modifier = Modifier,
 ) {
     composable(BundleScreen) {
         val bundleArg = BundleScreen.getNavArg(it)
+//        val bundleArg = it.arguments?.getParcelable("myExtra")
+//            ?: BundleScreen.BundleArg(emptyList(), 10)
+        LaunchedEffect(Unit) {
+            stopMeasureTime()
+            Log.d("puyo", "measuredTimeInMillis: ${getMeasuredTime()}")
+        }
+
         BundleScreen(
             navArg = bundleArg,
             modifier = modifier
         )
-        Log.d("puyo", bundleArg.toString())
+//        Log.d("puyo", bundleArg.toString())
     }
 }
 

@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -28,6 +29,7 @@ import com.example.mini_tech_talk.navigation.Screen
 import com.example.mini_tech_talk.navigation.Screen.ArgumentScreen
 import com.example.mini_tech_talk.navigation.Screen.BundleScreen
 import com.example.mini_tech_talk.navigation.composable
+import kotlin.random.Random
 
 fun NavGraphBuilder.addNavParamStartScreen(
     navigateToBundleScreen: (BundleScreen.BundleArg) -> Unit,
@@ -52,6 +54,10 @@ fun NavParamStartScreen(
 ) {
     var dataSetValue by rememberSaveable { mutableStateOf("") }
     var counterValue by rememberSaveable { mutableStateOf(10) }
+
+    val dummyData = remember {
+        List(1000) { "string ${Random.nextInt()}" }
+    }
 
     Column(modifier = modifier) {
         Text(
@@ -97,7 +103,7 @@ fun NavParamStartScreen(
                     val dataSet = dataSetValue.split(",", ignoreCase = true).map { it.trim() }
                     navigateToBundleScreen(
                         BundleScreen.BundleArg(
-                            dataSet = dataSet,
+                            dataSet = dummyData,
                             counter = counterValue
                         )
                     )
