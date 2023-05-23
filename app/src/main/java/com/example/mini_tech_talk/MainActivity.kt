@@ -23,7 +23,9 @@ import com.example.mini_tech_talk.navigation.composable
 import com.example.mini_tech_talk.presentation.home.HomeViewModel
 import com.example.mini_tech_talk.presentation.home.addHomeScreen
 import com.example.mini_tech_talk.presentation.navparam.NavParamStartScreen
+import com.example.mini_tech_talk.presentation.navparam.addArgumentScreen
 import com.example.mini_tech_talk.presentation.navparam.addBundleScreen
+import com.example.mini_tech_talk.presentation.navparam.addNavParamStartScreen
 import com.example.mini_tech_talk.presentation.stack.addStackScreen
 
 class MainActivity : ComponentActivity() {
@@ -61,21 +63,17 @@ class MainActivity : ComponentActivity() {
                     startDestination = Screen.NavParamStartScreen.route,
                     route = Screen.NavParamScreen.route,
                 ) {
-                    composable(Screen.NavParamStartScreen) {
-                        NavParamStartScreen(
-                            navigateToBundleScreen = {
-                                navController.navigate(
-                                    BundleScreen.createRoute(it)
-                                )
-                            },
-                            modifier = Modifier.fillMaxSize()
-                        )
-                    }
+                    addNavParamStartScreen(
+                        navigateToBundleScreen = {
+                            navController.navigate(BundleScreen.createRoute(it))
+                        },
+                        navigateToArgumentScreen = {
+                            navController.navigate(ArgumentScreen.createRoute(it))
+                        },
+                        modifier = Modifier.fillMaxSize()
+                    )
 
-                    composable(ArgumentScreen) {
-                        val navArg = ArgumentScreen.getNavArg(it)
-
-                    }
+                    addArgumentScreen(modifier = Modifier.fillMaxSize())
 
                     addBundleScreen(modifier = Modifier.fillMaxSize())
                 }

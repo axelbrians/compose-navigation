@@ -23,12 +23,31 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavGraphBuilder
+import com.example.mini_tech_talk.navigation.Screen
+import com.example.mini_tech_talk.navigation.Screen.ArgumentScreen
 import com.example.mini_tech_talk.navigation.Screen.BundleScreen
+import com.example.mini_tech_talk.navigation.composable
+
+fun NavGraphBuilder.addNavParamStartScreen(
+    navigateToBundleScreen: (BundleScreen.BundleArg) -> Unit,
+    navigateToArgumentScreen: (ArgumentScreen.ArgumentArg) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    composable(Screen.NavParamStartScreen) {
+        NavParamStartScreen(
+            navigateToBundleScreen = navigateToBundleScreen,
+            navigateToArgumentScreen = navigateToArgumentScreen,
+            modifier = modifier
+        )
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavParamStartScreen(
     navigateToBundleScreen: (BundleScreen.BundleArg) -> Unit,
+    navigateToArgumentScreen: (ArgumentScreen.ArgumentArg) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var dataSetValue by rememberSaveable { mutableStateOf("") }
@@ -68,7 +87,9 @@ fun NavParamStartScreen(
         )
 
         Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Button(
@@ -88,8 +109,13 @@ fun NavParamStartScreen(
             Spacer(modifier = Modifier.width(18.dp))
             Button(
                 onClick = {
-                    val dataSet = dataSetValue.split(",", ignoreCase = true).map { it.trim() }
-
+                    navigateToArgumentScreen(
+                        ArgumentScreen.ArgumentArg(
+                            string = dataSetValue,
+                            int = counterValue,
+                            float = counterValue.toFloat() / 2
+                        )
+                    )
                 },
                 modifier = Modifier.weight(1f)
             ) {
@@ -105,6 +131,7 @@ fun NavParamStartScreen(
 private fun Preview_NavParamStartScreen() {
     NavParamStartScreen(
         navigateToBundleScreen = { },
+        navigateToArgumentScreen = { },
         modifier = Modifier.fillMaxSize()
     )
 }

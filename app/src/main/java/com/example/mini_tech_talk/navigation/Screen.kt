@@ -49,8 +49,8 @@ sealed class Screen(
             }
         }
 
-        fun createRoute(string: String, int: Int, float: Float): String {
-            return "argument/$string/$int/$float"
+        fun createRoute(navArg: ArgumentArg): String {
+            return "argument/${navArg.string}/${navArg.int}/${navArg.float}"
         }
     }
 
