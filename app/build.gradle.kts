@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.example.mini_tech_talk"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.mini_tech_talk"
         minSdk = 28
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -73,6 +73,8 @@ dependencies {
 
     // Compose Navigation
     implementation(libs.navigation.compose)
+
+    implementation("com.github.axelbrians:CompanionKit:0.0.2")
 
     // GSON
     implementation(libs.google.gson)

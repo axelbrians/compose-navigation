@@ -6,6 +6,8 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -24,14 +26,13 @@ import com.example.mini_tech_talk.navigation.Screen.ArgumentScreen
 import com.example.mini_tech_talk.navigation.Screen.BundleScreen
 import com.example.mini_tech_talk.navigation.Screen.HomeScreen
 import com.example.mini_tech_talk.navigation.Screen.StackScreen
-import com.example.mini_tech_talk.navigation.composable
 import com.example.mini_tech_talk.presentation.home.HomeViewModel
 import com.example.mini_tech_talk.presentation.home.addHomeScreen
-import com.example.mini_tech_talk.presentation.navparam.NavParamStartScreen
 import com.example.mini_tech_talk.presentation.navparam.addArgumentScreen
 import com.example.mini_tech_talk.presentation.navparam.addBundleScreen
 import com.example.mini_tech_talk.presentation.navparam.addNavParamStartScreen
 import com.example.mini_tech_talk.presentation.stack.addStackScreen
+import com.example.mini_tech_talk.state_remember_recomposition.StepRemember
 
 class MainActivity : ComponentActivity() {
 
@@ -40,92 +41,104 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val navController = rememberNavController()
-            NavHost(
-                navController = navController,
-                startDestination = HomeScreen.route,
-                modifier = Modifier.fillMaxSize()
+            Column(
+                verticalArrangement = Arrangement.SpaceAround
             ) {
-                addHomeScreen(
-                    modifier = Modifier.fillMaxSize(),
-                    navigateToStackScreen = { navController.navigate(StackScreen.route) },
-                    navigateToManualScreen = {
-                        val intent = Intent(this@MainActivity, SecondActivity::class.java)
-                        startActivity(intent)
-                    },
-                    navigateToNavParamScreen = {
-                        navController.navigate(Screen.NavParamStartScreen.route)
-                    }
-                )
 
-                addStackScreen(
-                    modifier = Modifier.fillMaxSize(),
-                    navigateUp = { navController.navigateUp() }
-                )
+                StepRemember()
+
+//                StepStateHolder(modifier = Modifier.fillMaxWidth())
+            }
+        }
+    }
+
+    @Composable
+    fun NavigationTalk(modifier: Modifier = Modifier) {
+        val navController = rememberNavController()
+        NavHost(
+            navController = navController,
+            startDestination = HomeScreen.route,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            addHomeScreen(
+                modifier = Modifier.fillMaxSize(),
+                navigateToStackScreen = { navController.navigate(StackScreen.route) },
+                navigateToManualScreen = {
+                    val intent = Intent(this@MainActivity, SecondActivity::class.java)
+                    startActivity(intent)
+                },
+                navigateToNavParamScreen = {
+                    navController.navigate(Screen.NavParamStartScreen.route)
+                }
+            )
+
+            addStackScreen(
+                modifier = Modifier.fillMaxSize(),
+                navigateUp = { navController.navigateUp() }
+            )
 
 
-                navigation(
-                    startDestination = Screen.NavParamStartScreen.route,
-                    route = Screen.NavParamScreen.route,
-                ) {
-                    addNavParamStartScreen(
-                        navigateToBundleScreen = {
-                            homeViewModel.start()
-                            navController.navigate(BundleScreen.createRoute(it))
+            navigation(
+                startDestination = Screen.NavParamStartScreen.route,
+                route = Screen.NavParamScreen.route,
+            ) {
+                addNavParamStartScreen(
+                    navigateToBundleScreen = {
+                        homeViewModel.start()
+                        navController.navigate(BundleScreen.createRoute(it))
 
 //                            val bundle = Bundle().apply {
 //                                putParcelable("myExtra", it)
 //                            }
 //                            navController.navigate(BundleScreen.route, bundle)
-                        },
-                        navigateToArgumentScreen = {
-                            navController.navigate(ArgumentScreen.createRoute(it))
-                        },
-                        modifier = Modifier.fillMaxSize()
-                    )
+                    },
+                    navigateToArgumentScreen = {
+                        navController.navigate(ArgumentScreen.createRoute(it))
+                    },
+                    modifier = Modifier.fillMaxSize()
+                )
 
-                    addArgumentScreen(modifier = Modifier.fillMaxSize())
+                addArgumentScreen(modifier = Modifier.fillMaxSize())
 
-                    addBundleScreen(
-                        stopMeasureTime = homeViewModel::stop,
-                        getMeasuredTime = {
-                            homeViewModel.endTimeInMillis - homeViewModel.startTimeInMillis
-                        },
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
-
-
-                composable(
-                    route = "route-a/{id}",
-                    arguments = listOf(
-                        navArgument(name = "id") {
-                            this.type = NavType.IntType
-                            this.nullable = false
-                            this.defaultValue = 0
-                        }
-                    )
-                ) {
-
-                    navController.navigate("ini-route-a")
-
-                }
-
-                composable(
-                    route = "ini-route-a/{yourDataName}/{data-2}/{data-3}/{data-4}",
-                    arguments = listOf(
-                        navArgument("yourDataName") {
-                            type = NavType.IntType
-                            nullable = false
-                            defaultValue = 0
-                        }
-                    )
-                ) { }
-
-                composable(
-                    route = "ini-route-b"
-                ) { }
+                addBundleScreen(
+                    stopMeasureTime = homeViewModel::stop,
+                    getMeasuredTime = {
+                        homeViewModel.endTimeInMillis - homeViewModel.startTimeInMillis
+                    },
+                    modifier = Modifier.fillMaxSize()
+                )
             }
+
+
+            composable(
+                route = "route-a/{id}",
+                arguments = listOf(
+                    navArgument(name = "id") {
+                        this.type = NavType.IntType
+                        this.nullable = false
+                        this.defaultValue = 0
+                    }
+                )
+            ) {
+
+                navController.navigate("ini-route-a")
+
+            }
+
+            composable(
+                route = "ini-route-a/{yourDataName}/{data-2}/{data-3}/{data-4}",
+                arguments = listOf(
+                    navArgument("yourDataName") {
+                        type = NavType.IntType
+                        nullable = false
+                        defaultValue = 0
+                    }
+                )
+            ) { }
+
+            composable(
+                route = "ini-route-b"
+            ) { }
         }
     }
 
