@@ -6,13 +6,12 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.NavType
@@ -32,22 +31,36 @@ import com.example.mini_tech_talk.presentation.navparam.addArgumentScreen
 import com.example.mini_tech_talk.presentation.navparam.addBundleScreen
 import com.example.mini_tech_talk.presentation.navparam.addNavParamStartScreen
 import com.example.mini_tech_talk.presentation.stack.addStackScreen
+import com.example.mini_tech_talk.state_remember_recomposition.MyState
+import com.example.mini_tech_talk.state_remember_recomposition.StepDeepNestedComposable
 import com.example.mini_tech_talk.state_remember_recomposition.StepRemember
+import com.example.mini_tech_talk.state_remember_recomposition.StepRememberProof
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.seconds
 
 class MainActivity : ComponentActivity() {
 
     private val homeViewModel: HomeViewModel by viewModels()
 
+    private val counterState = MyState(0)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Column(
-                verticalArrangement = Arrangement.SpaceAround
-            ) {
+//            StepState(counter = counterState)
 
-                StepRemember()
+//            StepRemember()
 
-//                StepStateHolder(modifier = Modifier.fillMaxWidth())
+            StepDeepNestedComposable()
+
+//            StepRememberProof()
+        }
+
+        this.lifecycleScope.launch {
+            while (true) {
+                delay(1.seconds)
+                counterState.value += 1
             }
         }
     }
